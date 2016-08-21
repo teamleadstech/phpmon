@@ -15,7 +15,7 @@ class ServerReport
 		$this->db_conn = new PdoConnection();
 	}
 	
-	Public function syncServerSpecs(){
+	public function syncServerSpecs(){
 		$cpu_info = ServerInfo::getCpuInfo();
 		$disk_info = ServerInfo::getDiskInfo();
 		$os_info = ServerInfo::getOsInfo();
@@ -40,7 +40,7 @@ class ServerReport
 		return false;
 	}
 	
-	Public function reportLoad(){
+	public function reportLoad(){
 		$disk_info = ServerInfo::getDiskInfo();
 		$mem_info = ServerInfo::getMemInfo();
 		$load_info = ServerInfo::getLoadInfo();
@@ -77,6 +77,36 @@ class ServerReport
 		}
 		return false;
 		
+	}
+	
+	public function getLoadData(){
+		$response = array();
+		
+		$response['cpu_info'] = ServerInfo::getCpuInfo();
+		$response['os_info'] = ServerInfo::getOsInfo();
+		$response['disk_info'] = ServerInfo::getDiskInfo();
+		$response['mem_info'] = ServerInfo::getMemInfo();
+		$response['load_info'] = ServerInfo::getLoadInfo();
+		
+		return json_encode($response);
+	}
+	
+	public function collectData(){
+		$server_ip = '64.59.125.114';
+		$server_port = '3333';
+		
+		$fp = fsockopen($server_ip, $server_port, $errno, $errstr, 30);
+		if (!$fp) {
+			echo "$errstr ($errno)<br />\n";
+			return false;
+		} else {
+			$out = "";
+			fwrite($fp, $out);
+			while (!feof($fp)) {
+				echo fgets($fp, 1024);
+			}
+			fclose($fp);
+		}
 	}
 
 }

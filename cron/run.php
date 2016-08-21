@@ -23,6 +23,7 @@ if(isset($argv[1]) && $argv[1] == 'test'){
 	print_r(ServerInfo::getLoadInfo());
 }
 
+
 if(isset($argv[1]) && $argv[1] == 'testdb'){
     echo "Test Database Driver \n";
     $db = new PdoConnection();
@@ -42,6 +43,11 @@ if(isset($argv[1]) && $argv[1] == 'reportload'){
     echo "Report Server Load... \n";
 	$report = new ServerReport();
 	var_dump($report->reportLoad());
+}
+
+if(isset($argv[1]) && $argv[1] == 'getload'){
+	$report = new ServerReport();
+	var_dump($report->collectData());
 }
 
 
