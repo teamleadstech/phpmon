@@ -79,6 +79,18 @@ class ServerReport
 		
 	}
 	
+	public function genBash(){
+		$str = '';
+		$file = CRON_DIR.'get_load';
+		$str .= "#!/bin/bash\n";
+		$str .= "cd ".CRON_DIR." && php getLoad.php";
+		if(!file_exists($file)){
+			file_put_contents($file, $str);
+		}
+		chmod($file, 0755);
+		return $file;
+	}
+	
 	public function getLoadData(){
 		$response = array();
 		

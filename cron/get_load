@@ -1,2 +1,0 @@
-#!/bin/bash
-cd /var/www/vhost/sam/phpmon/cron && php getLoad.php

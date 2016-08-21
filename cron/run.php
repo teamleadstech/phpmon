@@ -50,6 +50,11 @@ if(isset($argv[1]) && $argv[1] == 'getload'){
 	var_dump($report->collectData());
 }
 
+if(isset($argv[1]) && $argv[1] == 'genbash'){
+	$report = new ServerReport();
+	echo $report->genBash()."\n";
+}
+
 
 echo date('Y-m-d H:i:s')." Job End... \n";
 
