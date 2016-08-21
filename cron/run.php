@@ -46,7 +46,7 @@ if(isset($argv[1]) && $argv[1] == 'reportload'){
 }
 
 if(isset($argv[1]) && $argv[1] == 'getload'){
-	$report = new ServerReport(false);
+	$report = new ServerReport();
 	print_r($report->collectData());
 }
 
