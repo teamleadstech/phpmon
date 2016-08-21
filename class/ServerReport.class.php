@@ -108,6 +108,7 @@ class ServerReport
 	public function collectData(){
 		$server_ip = '64.59.125.114';
 		$server_port = '3333';
+		$server_key = '123123';
 		
 		$fp = fsockopen($server_ip, $server_port, $errno, $errstr, 30);
 		$response = '';
@@ -115,7 +116,7 @@ class ServerReport
 			echo "$errstr ($errno)<br />\n";
 			return false;
 		} else {
-			$out = "123123\n";
+			$out = $server_key."\n";
 			fwrite($fp, $out);
 			while (!feof($fp)) {
 				$response .= fgets($fp, 1024);
