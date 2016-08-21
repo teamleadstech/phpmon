@@ -109,10 +109,12 @@ class ServerInfo
 			'os' => 'NA',
 			'kernel' => 'NA',
 			'reboot' => 'NA',
+			'lastlog' => 'NA',
 		);
 		
 		$os_info['os'] = trim(Tool::cmd('cat /etc/system-release',false));
 		$os_info['kernel'] = trim(Tool::cmd('/bin/uname -r',false));
+		$os_info['lastlog'] = trim(Tool::cmd('lastlog -t 30',false));
 		
 		$cat_uptime = trim(Tool::cmd('cat /proc/uptime',false));
 		$parts = explode(' ', $cat_uptime);

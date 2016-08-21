@@ -110,17 +110,21 @@ class ServerReport
 		$server_port = '3333';
 		
 		$fp = fsockopen($server_ip, $server_port, $errno, $errstr, 30);
+		$response = '';
 		if (!$fp) {
 			echo "$errstr ($errno)<br />\n";
 			return false;
 		} else {
-			$out = "";
+			$out = "123123\n";
 			fwrite($fp, $out);
 			while (!feof($fp)) {
-				echo fgets($fp, 1024);
+				$response .= fgets($fp, 1024);
 			}
 			fclose($fp);
 		}
+		$response = trim($response);
+		//echo '{JSON_START}'.$response.'{JSON_END}';
+		return json_decode($response,true);
 	}
 
 }

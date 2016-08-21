@@ -47,7 +47,7 @@ if(isset($argv[1]) && $argv[1] == 'reportload'){
 
 if(isset($argv[1]) && $argv[1] == 'getload'){
 	$report = new ServerReport(false);
-	var_dump($report->collectData());
+	print_r($report->collectData());
 }
 
 if(isset($argv[1]) && $argv[1] == 'genbash'){
