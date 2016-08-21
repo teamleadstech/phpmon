@@ -11,8 +11,10 @@ class ServerReport
 {
 	protected $db_conn;
 	
-	public function __construct(){
-		$this->db_conn = new PdoConnection();
+	public function __construct($db = true){
+		if($db){
+			$this->db_conn = new PdoConnection();
+		}
 	}
 	
 	public function syncServerSpecs(){

@@ -46,12 +46,12 @@ if(isset($argv[1]) && $argv[1] == 'reportload'){
 }
 
 if(isset($argv[1]) && $argv[1] == 'getload'){
-	$report = new ServerReport();
+	$report = new ServerReport(false);
 	var_dump($report->collectData());
 }
 
 if(isset($argv[1]) && $argv[1] == 'genbash'){
-	$report = new ServerReport();
+	$report = new ServerReport(false);
 	echo $report->genBash()."\n";
 }
 

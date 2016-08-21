@@ -8,7 +8,7 @@ require_once '../config.php';
 
 $input = Tool::cmdInput();
 
-if($input == '9059025341'){
+if($input == SERVER_KEY){
 	$report = new ServerReport();
 	echo $report->getLoadData();
 }
