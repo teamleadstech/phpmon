@@ -8,13 +8,33 @@ $footer_scripts = array();
 include_once WWW_DIR.'page/template.header.php';
 include_once WWW_DIR.'page/template.nav.php';
 ?>
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<script type="text/javascript">
+google.charts.load('current', {'packages':['table']});
+google.charts.setOnLoadCallback(drawTable);
+function drawTable() {
+		var jsonData = $.ajax({
+		  url: "/api?method=get_pull_log",
+		  dataType: "json",
+		  async: false
+		}).responseText;
+		var data = new google.visualization.DataTable(jsonData);
 
+		var table = new google.visualization.Table(document.getElementById('server_pull_log'));
+
+		table.draw(data, {showRowNumber: false, allowHtml: true, width: '100%', height: '100%'});
+	}
+</script>
 <!-- Page Content -->
 <div id="page-wrapper">
 	<div class="container-fluid">
 		<div class="row">
 			<div class="col-lg-12">
-				<h1 class="page-header">Blank</h1>
+				<h1 class="page-header">Node Sync Log</h1>
+				<div class="panel panel-info">
+				<div class="panel-heading">Node Log</div>
+				<div id="server_pull_log"></div>
+				</div>
 			</div>
 			<!-- /.col-lg-12 -->
 		</div>

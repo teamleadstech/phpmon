@@ -8,22 +8,181 @@ $footer_scripts = array();
 include_once WWW_DIR.'page/template.header.php';
 include_once WWW_DIR.'page/template.nav.php';
 ?>
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<script type="text/javascript">
+	google.charts.load('current', {'packages':['corechart','table','line']});
+	google.charts.setOnLoadCallback(drawTable);
+	google.charts.setOnLoadCallback(drawLoadTrend);
+	google.charts.setOnLoadCallback(drawMemTrend);
+	google.charts.setOnLoadCallback(drawDiskTrend);
+	google.charts.setOnLoadCallback(drawPHPPidTrend);
 
+	function drawTable() {
+		var jsonData = $.ajax({
+		  url: "/api?method=get_server_specs&server_id=<?php echo $_GET['server']; ?>",
+		  dataType: "json",
+		  async: false
+		}).responseText;
+		var data = new google.visualization.DataTable(jsonData);
+
+		var table = new google.visualization.Table(document.getElementById('server_specs'));
+
+		table.draw(data, {showRowNumber: false, allowHtml: true, width: '100%', height: '100%'});
+	}
+	
+	function drawLoadTrend() {
+		var jsonData = $.ajax({
+		  url: "/api?method=get_load_trend&server_id=<?php echo $_GET['server']; ?>",
+		  dataType: "json",
+		  async: false
+		}).responseText;
+		var data = new google.visualization.DataTable(jsonData);
+		var options = {
+			hAxis: {
+			  title: 'Time',
+			  logScale: false
+			},
+			vAxis: {
+			  title: 'Load Average',
+			  logScale: false
+			},
+			colors: ['#a52714', '#097138','#0000ff']
+		  };
+		var chart = new google.visualization.LineChart(document.getElementById('server_load'));
+		chart.draw(data, options);
+		
+	}
+	
+	function drawMemTrend() {
+		var jsonData = $.ajax({
+		  url: "/api?method=get_mem_use_trend&server_id=<?php echo $_GET['server']; ?>",
+		  dataType: "json",
+		  async: false
+		}).responseText;
+		var data = new google.visualization.DataTable(jsonData);
+		var options = {
+			hAxis: {
+			  title: 'Time',
+			  logScale: false
+			},
+			vAxis: {
+			  title: 'Memory Usage',
+			  logScale: false
+			},
+			colors: ['#a52714']
+		  };
+		var chart = new google.visualization.LineChart(document.getElementById('server_mem'));
+		chart.draw(data, options);
+		
+	}
+	
+	function drawDiskTrend() {
+		var jsonData = $.ajax({
+		  url: "/api?method=get_disk_tps_trend&server_id=<?php echo $_GET['server']; ?>",
+		  dataType: "json",
+		  async: false
+		}).responseText;
+		var data = new google.visualization.DataTable(jsonData);
+		var options = {
+			hAxis: {
+			  title: 'Time',
+			  logScale: false
+			},
+			vAxis: {
+			  title: 'Disk TPS',
+			  logScale: false
+			},
+			colors: ['#a52714']
+		  };
+		var chart = new google.visualization.LineChart(document.getElementById('server_disk'));
+		chart.draw(data, options);
+		
+	}
+	
+	function drawPHPPidTrend() {
+		var jsonData = $.ajax({
+		  url: "/api?method=get_php_pid_trend&server_id=<?php echo $_GET['server']; ?>",
+		  dataType: "json",
+		  async: false
+		}).responseText;
+		var data = new google.visualization.DataTable(jsonData);
+		var options = {
+			hAxis: {
+			  title: 'Time',
+			  logScale: false
+			},
+			vAxis: {
+			  title: 'PHP Pids',
+			  logScale: false
+			},
+			colors: ['#a52714']
+		  };
+		var chart = new google.visualization.LineChart(document.getElementById('server_php_pids'));
+		chart.draw(data, options);
+		
+	}
+</script>
 <!-- Page Content -->
 <div id="page-wrapper">
 	<div class="container-fluid">
+	
 		<div class="row">
 			<div class="col-lg-12">
 				<h1 class="page-header"><?php echo $_GET['server']; ?></h1>
-				<pre>
-				<?php
-					$report = new ServerReport();
-					print_r($report->getRemoteLoad($_GET['server'],true));
-				?>
-				</pre>
 			</div>
 			<!-- /.col-lg-12 -->
 		</div>
+		
+	<div class="row">
+		<div class="col-lg-4">
+			<div class="panel panel-info">
+			<div class="panel-heading">Server Specs</div>
+			<div id="server_specs"></div>
+			</div>
+		</div>
+	</div>
+	
+	<div class="row">
+		<div class="col-lg-12">
+			<div class="panel panel-info">
+			<div class="panel-heading">Load Monitor</div>
+			<div id="server_load"></div>
+			</div>
+		</div>
+	</div>
+	
+	<div class="row">
+		<div class="col-lg-12">
+			<div class="panel panel-info">
+			<div class="panel-heading">Memory Monitor</div>
+			<div id="server_mem"></div>
+			</div>
+		</div>
+	</div>
+	
+	<div class="row">
+		<div class="col-lg-12">
+			<div class="panel panel-info">
+			<div class="panel-heading">Disk Monitor</div>
+			<div id="server_disk"></div>
+			</div>
+		</div>
+	</div>
+	
+	<div class="row">
+		<div class="col-lg-12">
+			<div class="panel panel-info">
+			<div class="panel-heading">Cron Monitor</div>
+			<div id="server_php_pids"></div>
+			</div>
+		</div>
+	</div>
+	
+	<div class="row">
+		<div class="col-lg-12">
+			<pre><?php $report = new ServerReport(); print_r($report->getRemoteLoad($_GET['server'],true));?></pre>
+		</div>
+	</div>
 		<!-- /.row -->
 	</div>
 	<!-- /.container-fluid -->

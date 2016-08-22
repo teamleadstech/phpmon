@@ -15,6 +15,10 @@ class Routing{
 				'file' => 'page/monitor.phtml',
 				'auth' => false,
 			),
+			'api' => array(
+				'file' => 'page/api.phtml',
+				'auth' => false,
+			),
 			'404' => array(
 				'file' => 'page/404.phtml',
 				'auth' => false,
@@ -32,11 +36,11 @@ class Routing{
 	}
 	
 	public function parseRoute($request_uri){
-		
 		$request_uri = preg_replace('/\/$/','',$request_uri);
-		$request_uri = substr($request_uri, 0, strpos($request_uri, "?"));	
+		if(strpos($request_uri, "?") !== false){
+			$request_uri = substr($request_uri, 0, strpos($request_uri, "?"));
+		}
 		$params = @split("/", $request_uri);
-		
 		if(isset($params[1]) && !empty($params[1]) && isset($this->pages[$params[1]]) && !empty($this->pages[$params[1]])){
 			$response = $this->loadPage($params[1]);
 			return $response;

@@ -1,0 +1,41 @@
+<?php
+$allow_method = array('get_pull_log','get_server_specs','get_load_trend','get_mem_use_trend','get_disk_tps_trend','get_php_pid_trend');
+
+if(!isset($_GET['method']) || !in_array($_GET['method'],$allow_method)){
+	//var_dump(in_array($_GET['method'],$method));
+	exit('Invalid request');
+}
+
+header('Access-Control-Allow-Origin: *');
+header('Access-Control-Allow-Methods: GET, POST');  
+header('Content-Type: application/json');
+
+if($_GET['method'] == 'get_pull_log'){
+	$gui = new GUIReport(); 
+	echo json_encode($gui->get_pull_log());
+}
+
+if($_GET['method'] == 'get_server_specs' && isset($_GET['server_id']) && !empty($_GET['server_id'])){
+	$gui = new GUIReport(); 
+	echo json_encode($gui->get_server_specs($_GET['server_id']));
+}
+
+if($_GET['method'] == 'get_load_trend' && isset($_GET['server_id']) && !empty($_GET['server_id'])){
+	$gui = new GUIReport(); 
+	echo json_encode($gui->get_load_trend($_GET['server_id']));
+}
+
+if($_GET['method'] == 'get_mem_use_trend' && isset($_GET['server_id']) && !empty($_GET['server_id'])){
+	$gui = new GUIReport(); 
+	echo json_encode($gui->get_mem_use_trend($_GET['server_id']));
+}
+
+if($_GET['method'] == 'get_disk_tps_trend' && isset($_GET['server_id']) && !empty($_GET['server_id'])){
+	$gui = new GUIReport(); 
+	echo json_encode($gui->get_disk_tps_trend($_GET['server_id']));
+}
+
+if($_GET['method'] == 'get_php_pid_trend' && isset($_GET['server_id']) && !empty($_GET['server_id'])){
+	$gui = new GUIReport(); 
+	echo json_encode($gui->get_php_pid_trend($_GET['server_id']));
+}
