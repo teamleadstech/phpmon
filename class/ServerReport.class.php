@@ -106,8 +106,7 @@ class ServerReport
 	}
 	
 	public function collectData(){
-		$sql = "SELECT ServerId,ServerExtIP,ServerPort,ServerKey FROM MonitorServer WHERE MonitorYN = 1;";
-		$result = $this->db_conn->fetchAll($sql);
+		$result = $this->getMonitorServer();
 		if(!$result){
 			return false;
 		}
@@ -134,6 +133,28 @@ class ServerReport
 			'fail' => $fail,
 			
 		);
+	}
+	
+	public function getMonitorServer($server_id = false){
+		if($server_id){
+			$server_id = $this->db_conn->quote($server_id);
+			$sql = "SELECT ServerId,ServerExtIP,ServerPort,ServerKey FROM MonitorServer WHERE MonitorYN = 1 AND ServerId = $server_id;";
+		}else{
+			$sql = "SELECT ServerId,ServerExtIP,ServerPort,ServerKey FROM MonitorServer WHERE MonitorYN = 1;";
+		}
+		$result = $this->db_conn->fetchAll($sql);
+		return $result;
+	}
+	
+	public function getRemoteLoad($server_id){
+		$server = $this->getMonitorServer($server_id);
+		if($server){
+			$data = $this->getNodeData($server[0]['ServerExtIP'],$server[0]['ServerPort'],$server[0]['ServerKey']);
+			if($data){
+				return $data;
+			}
+		}
+		return false;
 	}
 	
 	public function addMonitorLog($data){

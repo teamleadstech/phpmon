@@ -3,14 +3,17 @@
 define('APP_NAME', 'PHP Monitor');
 define('APP_DOMAIN', 'www.phpmon.com');
 define('APP_AUTHOR', 'Samuel Zhang');
-define('SERVER_ID', 'gc-web-lab-vm1');
+define('DEBUG_MODE', true);
+
+//Node Config
+define('SERVER_ID', '');
+define('SERVER_KEY', '');
 
 //Directory Config
 define('SYSTEM_DIR', __DIR__);
-define('API_DIR', SYSTEM_DIR.'/api/');
 define('CLASS_DIR', SYSTEM_DIR.'/class/');
-define('UPLOAD_DIR', SYSTEM_DIR.'/upload/');
-define('PAGE_DIR', SYSTEM_DIR.'/page/');
+define('CRON_DIR', SYSTEM_DIR.'/cron/');
+define('WWW_DIR', SYSTEM_DIR.'/www/');
 
 //Database Config
 define('MYSQL_HOST', '');
@@ -38,5 +41,11 @@ function loadClassDependency($class)
 
 spl_autoload_register('loadClassDependency');
 
-?>
+if(DEBUG_MODE){
+	ini_set("display_errors", "1");
+	error_reporting(E_ALL);
+}else{
+	ini_set("display_errors", "0");
+	error_reporting(0);
+}
 
