@@ -45,7 +45,7 @@ if(isset($argv[1]) && $argv[1] == 'reportload'){
 	var_dump($report->reportLoad());
 }
 
-if(isset($argv[1]) && $argv[1] == 'getload'){
+if(isset($argv[1]) && $argv[1] == 'pullnode'){
 	$report = new ServerReport();
 	print_r($report->collectData());
 }

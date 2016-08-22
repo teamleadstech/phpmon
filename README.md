@@ -28,6 +28,9 @@ vim config.php
 	</Directory>
 </VirtualHost>
 
+4. sudo vim /etc/crontab
+*/5 * * * * root cd /var/www/vhost/sam/phpmon/cron && php run.php pullnode >> /tmp/phpmon/node_load_pulling.log 2>&1
+
 </pre>
 
 ==NODE DEPLOYMENT==
@@ -62,20 +65,20 @@ vim /etc/xinetd.d/phpmon
 
 service phpmon
 {
-	disable = no
-	socket_type = stream
-	protocol = tcp
-	only_from = 104.196.29.218 localhost
-	port = 3333
-	wait = no
-	user = root
-	server = /var/www/vhost/sam/phpmon/cron/get_load
-	instances = 20
+    disable = no
+    socket_type = stream
+    protocol = tcp
+    only_from = 104.196.29.218 localhost
+    port = 3333
+    wait = no
+    user = root
+    server = /var/www/app/phpmon/cron/get_load
+    instances = 20
 }
 
-
-
 service xinetd restart
+
+netstat -na | grep 3333
 
 vim /etc/sysconfig/iptables
 

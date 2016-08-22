@@ -126,13 +126,23 @@ class ServerReport
 			}
 			$i++;
 		}
-		return array(
+		$report_data = array(
 			'total' => $counter,
-			'rate' => round(count($pass)/$counter*100,2)."%",
+			'rate' => round(count($pass)/$counter*100,2),
 			'pass' => $pass,
 			'fail' => $fail,
-			
 		);
+		$this->addPullingLog($report_data);
+		return $report_data;
+	}
+	
+	public function addPullingLog($data){
+		$total = $data['total'];
+		$rate = $data['rate'];
+		$pass = implode(",", $data['pass']);
+		$fail = implode(",", $data['fail']);
+		$sql = "INSERT INTO `PullingLog` (`pass_rate`, `pass_server`, `fail_server`, `total_server`) VALUES ('$rate', '$pass', '$fail', '$total');";
+		$result = $this->db_conn->query($sql);
 	}
 	
 	public function getMonitorServer($server_id = false){
