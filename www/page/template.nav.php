@@ -1,8 +1,3 @@
-<?php
-
-$report = new ServerReport();
-$servers = $report->getMonitorServer();
-?>
 <body>
 
     <div id="wrapper">

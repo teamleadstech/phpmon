@@ -7,9 +7,11 @@
 class GUIReport
 {
 	protected $db_conn;
+	protected $report;
 	
 	public function __construct(){
 		$this->db_conn = new PdoConnection();
+		$this->server_report = new ServerReport();
 	}
 	
 	public function get_server_specs($sid){
@@ -24,8 +26,8 @@ class GUIReport
                 'type' => 'string',
             ),
         );
-		$report = new ServerReport();
-		$data = $report->getRemoteLoad($sid,true);
+		
+		$data = $this->server_report->getRemoteLoad($sid,true);
 		
 		$response['rows'][]['c'] = array(array('v' =>'CPU Model'),array('v' =>$data['cpu_info']['model']),);
 		$response['rows'][]['c'] = array(array('v' =>'CPU Cores'),array('v' =>$data['cpu_info']['cores']),);
@@ -34,10 +36,14 @@ class GUIReport
 		$response['rows'][]['c'] = array(array('v' =>'CPU Bogomips'),array('v' =>$data['cpu_info']['bogomips']),);
 		$response['rows'][]['c'] = array(array('v' =>'OS Version'),array('v' =>$data['os_info']['os']),);
 		$response['rows'][]['c'] = array(array('v' =>'OS Kernel'),array('v' =>$data['os_info']['kernel']),);
-		$response['rows'][]['c'] = array(array('v' =>'Memory'),array('v' =>Tool::humanSize($data['mem_info']['total'],'K')),);
-		$response['rows'][]['c'] = array(array('v' =>'Memory(use)'),array('v' =>(Tool::humanSize($data['mem_info']['used'],'K').' ('.$data['mem_info']['use_pert'].'%)')),);
-		$response['rows'][]['c'] = array(array('v' =>'Disk'),array('v' =>Tool::humanSize($data['disk_info']['total'],'K')),);
-		$response['rows'][]['c'] = array(array('v' =>'Disk(use)'),array('v' =>(Tool::humanSize($data['disk_info']['used'],'K').' ('.$data['disk_info']['use_pert'].'%)')),);
+		$response['rows'][]['c'] = array(array('v' =>'Last Boot'),array('v' => $data['os_info']['reboot']),);
+		$response['rows'][]['c'] = array(array('v' =>'Total PIDs'),array('v' => $data['load_info']['total_pids']),);
+		$response['rows'][]['c'] = array(array('v' =>'Memory Total'),array('v' =>Tool::humanSize($data['mem_info']['total'],'K')),);
+		$response['rows'][]['c'] = array(array('v' =>'Memory Usage'),array('v' =>(Tool::humanSize($data['mem_info']['used'],'K').' ('.$data['mem_info']['use_pert'].'%)')),);
+		$response['rows'][]['c'] = array(array('v' =>'Disk Total'),array('v' =>Tool::humanSize($data['disk_info']['total'],'K')),);
+		$response['rows'][]['c'] = array(array('v' =>'Disk Usage'),array('v' =>(Tool::humanSize($data['disk_info']['used'],'K').' ('.$data['disk_info']['use_pert'].'%)')),);
+		$response['rows'][]['c'] = array(array('v' =>'Disk Read'),array('v' => $data['load_info']['disk_rkbs'].' KB/s'),);
+		$response['rows'][]['c'] = array(array('v' =>'Disk Write'),array('v' =>  $data['load_info']['disk_wkbs'].' KB/s'),);
 		return $response;
 	}
 	

@@ -10,6 +10,7 @@
 class ServerReport
 {
 	protected $db_conn;
+	protected $load_data_cache;
 	
 	public function __construct($db = true){
 		if($db){
@@ -203,6 +204,11 @@ class ServerReport
 	
 	public function getNodeData($server_ip,$server_port,$server_key){
 		
+		if($this->load_data_cache[$server_ip]){
+			//echo "hit cache";
+			return $this->load_data_cache[$server_ip];
+		}
+		
 		$fp = fsockopen($server_ip, $server_port, $errno, $errstr, 30);
 		$response = '';
 		if (!$fp) {
@@ -216,9 +222,10 @@ class ServerReport
 			}
 			fclose($fp);
 		}
-		$response = trim($response);
+		$response = json_decode(trim($response),true);
+		$this->load_data_cache[$server_ip] = $response;
 		//echo '{JSON_START}'.$response.'{JSON_END}';
-		return json_decode($response,true);
+		return $response;
 	}
 
 }
