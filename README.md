@@ -55,6 +55,9 @@ yum install xinetd
 
 cat /etc/xinetd.conf
 
+vim /etc/services
+phpmon           3333/tcp               # phpmon
+
 vim /etc/xinetd.d/phpmon
 
 service phpmon
@@ -69,6 +72,8 @@ service phpmon
 	server = /var/www/vhost/sam/phpmon/cron/get_load
 	instances = 20
 }
+
+
 
 service xinetd restart
 

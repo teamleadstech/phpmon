@@ -9,6 +9,6 @@ require_once '../config.php';
 $input = Tool::cmdInput();
 
 if($input == SERVER_KEY){
-	$report = new ServerReport();
+	$report = new ServerReport(false);
 	echo $report->getLoadData();
 }
