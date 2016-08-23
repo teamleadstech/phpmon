@@ -4,7 +4,7 @@
  * User: Samuel Zhang
  * Date: 2016-08-12
  */
-class GUIReport
+class GUIReport extends ServerReport
 {
 	protected $db_conn;
 	protected $report;

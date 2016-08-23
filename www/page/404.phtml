@@ -2,6 +2,9 @@
 $page_name = 'Home Page';
 $page_des = 'Team Leads';
 
+$report = new GUIReport();
+$servers = $report->getMonitorServer();
+
 $header_scripts = array();
 $footer_scripts = array();
 
@@ -14,6 +17,7 @@ include_once WWW_DIR.'page/template.nav.php';
 	<div class="container-fluid">
 		<div class="row">
 			<div class="col-lg-12">
+				<h1 class="page-header">404 - PAGE NOT FOUND</h1>
 				<img src="/dist/img/404.jpg"/>
 			</div>
 			<!-- /.col-lg-12 -->

@@ -2,6 +2,9 @@
 $page_name = 'Home Page';
 $page_des = 'Team Leads';
 
+$report = new GUIReport();
+$servers = $report->getMonitorServer();
+
 $header_scripts = array();
 $footer_scripts = array();
 

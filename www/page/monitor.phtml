@@ -2,13 +2,13 @@
 $page_name = 'Home Page';
 $page_des = 'Team Leads';
 
-$report = new ServerReport();
-$gui = new GUIReport();
+
+$report = new GUIReport();
 $servers = $report->getMonitorServer();
 $remote_load = $report->getRemoteLoad($_GET['server'],true);
 $login_record = $remote_load['os_info']['lastlog'];
 $login_record = trim(substr($login_record, 0, strpos($login_record, "wtmp")));
-$server_specs = json_encode($gui->get_server_specs($_GET['server']),true);
+$server_specs = json_encode($report->get_server_specs($_GET['server']),true);
 
 $header_scripts = array();
 $footer_scripts = array();
@@ -43,7 +43,7 @@ include_once WWW_DIR.'page/template.nav.php';
 		var data = new google.visualization.DataTable(jsonData);
 		var options = {
 			hAxis: {
-			  title: 'Time',
+			  title: 'Time (UTC)',
 			  logScale: false
 			},
 			vAxis: {
@@ -66,7 +66,7 @@ include_once WWW_DIR.'page/template.nav.php';
 		var data = new google.visualization.DataTable(jsonData);
 		var options = {
 			hAxis: {
-			  title: 'Time',
+			  title: 'Time (UTC)',
 			  logScale: false
 			},
 			vAxis: {
@@ -89,7 +89,7 @@ include_once WWW_DIR.'page/template.nav.php';
 		var data = new google.visualization.DataTable(jsonData);
 		var options = {
 			hAxis: {
-			  title: 'Time',
+			  title: 'Time (UTC)',
 			  logScale: false
 			},
 			vAxis: {
@@ -112,7 +112,7 @@ include_once WWW_DIR.'page/template.nav.php';
 		var data = new google.visualization.DataTable(jsonData);
 		var options = {
 			hAxis: {
-			  title: 'Time',
+			  title: 'Time (UTC)',
 			  logScale: false
 			},
 			vAxis: {
@@ -138,13 +138,13 @@ include_once WWW_DIR.'page/template.nav.php';
 		</div>
 		
 	<div class="row">
-		<div class="col-lg-4">
+		<div class="col-lg-6">
 			<div class="panel panel-info">
 			<div class="panel-heading">Server Specs</div>
 			<div id="server_specs"></div>
 			</div>
 		</div>
-		<div class="col-lg-8">
+		<div class="col-lg-6">
 			<div class="panel panel-info">
 			<div class="panel-heading">Login Records</div>
 			<pre><?php echo $login_record; ?></pre>
