@@ -10,6 +10,11 @@ $login_record = $remote_load['os_info']['lastlog'];
 $login_record = trim(substr($login_record, 0, strpos($login_record, "wtmp")));
 $server_specs = json_encode($report->get_server_specs($_GET['server']),true);
 
+$date_param = '';
+if(isset($_GET['date'])){
+	$date_param = '&date='.$_GET['date'];
+}
+
 $header_scripts = array();
 $footer_scripts = array();
 
@@ -36,7 +41,7 @@ include_once WWW_DIR.'page/template.nav.php';
 	
 	function drawLoadTrend() {
 		var jsonData = $.ajax({
-		  url: "/api?method=get_load_trend&server_id=<?php echo $_GET['server']; ?>",
+		  url: "/api?method=get_load_trend&server_id=<?php echo $_GET['server'].$date_param; ?>",
 		  dataType: "json",
 		  async: false
 		}).responseText;
@@ -59,7 +64,7 @@ include_once WWW_DIR.'page/template.nav.php';
 	
 	function drawMemTrend() {
 		var jsonData = $.ajax({
-		  url: "/api?method=get_mem_use_trend&server_id=<?php echo $_GET['server']; ?>",
+		  url: "/api?method=get_mem_use_trend&server_id=<?php echo $_GET['server'].$date_param; ?>",
 		  dataType: "json",
 		  async: false
 		}).responseText;
@@ -82,7 +87,7 @@ include_once WWW_DIR.'page/template.nav.php';
 	
 	function drawDiskTrend() {
 		var jsonData = $.ajax({
-		  url: "/api?method=get_disk_tps_trend&server_id=<?php echo $_GET['server']; ?>",
+		  url: "/api?method=get_disk_tps_trend&server_id=<?php echo $_GET['server'].$date_param; ?>",
 		  dataType: "json",
 		  async: false
 		}).responseText;
@@ -105,7 +110,7 @@ include_once WWW_DIR.'page/template.nav.php';
 	
 	function drawPHPPidTrend() {
 		var jsonData = $.ajax({
-		  url: "/api?method=get_php_pid_trend&server_id=<?php echo $_GET['server']; ?>",
+		  url: "/api?method=get_php_pid_trend&server_id=<?php echo $_GET['server'].$date_param; ?>",
 		  dataType: "json",
 		  async: false
 		}).responseText;

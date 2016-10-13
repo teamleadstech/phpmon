@@ -193,8 +193,12 @@ class ServerReport
 		$disk_wtps = $data['load_info']['disk_wtps'];
 		$disk_rkbs = $data['load_info']['disk_rkbs'];
 		$disk_wkbs = $data['load_info']['disk_wkbs'];
-		
-		$sql = "INSERT INTO `MonitorLog` (`ServerId`, `users`, `who_info`, `mem_use_kb`, `mem_free_kb`, `mem_total_kb`, `mem_use_pert`, `disk_use_kb`, `disk_free_kb`, `disk_total_kb`, `disk_use_pert`, `load_1min`, `load_1min_pert`, `load_5min`, `load_5min_pert`, `load_15min`, `load_15min_pert`, `total_pids`, `php_pids`, `disk_tps`, `disk_rtps`, `disk_wtps`, `disk_rkbs`, `disk_wkbs`) VALUES ('$server', '$users', '$who_info', '$mem_use_kb', '$mem_free_kb', '$mem_total_kb', '$mem_use_pert', '$disk_use_kb', '$disk_free_kb', '$disk_total_kb', '$disk_use_pert', '$load_1min', '$load_1min_pert', '$load_5min', '$load_5min_pert', '$load_15min', '$load_15min_pert', '$total_pids', '$php_pids', '$disk_tps', '$disk_rtps', '$disk_wtps', '$disk_rkbs', '$disk_wkbs');";
+		$cpu_idle = $data['cpu_info']['idle'];
+		$cpu_sys = $data['cpu_info']['sys'];
+		$cpu_iowait = $data['cpu_info']['iowait'];
+		$cpu_user = $data['cpu_info']['user'];
+
+		$sql = "INSERT INTO `MonitorLog` (`ServerId`, `users`, `who_info`, `mem_use_kb`, `mem_free_kb`, `mem_total_kb`, `mem_use_pert`, `disk_use_kb`, `disk_free_kb`, `disk_total_kb`, `disk_use_pert`, `load_1min`, `load_1min_pert`, `load_5min`, `load_5min_pert`, `load_15min`, `load_15min_pert`, `total_pids`, `php_pids`, `disk_tps`, `disk_rtps`, `disk_wtps`, `disk_rkbs`, `disk_wkbs`, `cpu_idle`,`cpu_sys`,`cpu_iowait`,`cpu_user`) VALUES ('$server', '$users', '$who_info', '$mem_use_kb', '$mem_free_kb', '$mem_total_kb', '$mem_use_pert', '$disk_use_kb', '$disk_free_kb', '$disk_total_kb', '$disk_use_pert', '$load_1min', '$load_1min_pert', '$load_5min', '$load_5min_pert', '$load_15min', '$load_15min_pert', '$total_pids', '$php_pids', '$disk_tps', '$disk_rtps', '$disk_wtps', '$disk_rkbs', '$disk_wkbs', '$cpu_idle', '$cpu_sys', '$cpu_iowait', '$cpu_user');";
 		$result = $this->db_conn->query($sql);
 		if($result){
 			return $result->rowCount()." rows affected...\n";
@@ -204,7 +208,7 @@ class ServerReport
 	
 	public function getNodeData($server_ip,$server_port,$server_key){
 		
-		if($this->load_data_cache[$server_ip]){
+		if(isset($this->load_data_cache[$server_ip]) && !empty($this->load_data_cache[$server_ip])){
 			//echo "hit cache";
 			return $this->load_data_cache[$server_ip];
 		}

@@ -15,8 +15,17 @@ class ServerInfo
 			'frequency' => 'NA',
 			'cache' => 'NA',
 			'bogomips' => 'NA',
+			'idle' => '100',
+			'user' => '0',
+			'iowait' => '0',
+			'sys' => '0',
 		);
 		$cpu_info['cores'] = trim(Tool::cmd('/bin/grep -c ^processor /proc/cpuinfo',false));
+		$cpu_info['idle'] = trim(Tool::cmd('mpstat | grep all | awk \'{print $12}\'',false));
+		$cpu_info['user'] = trim(Tool::cmd('mpstat | grep all | awk \'{print $4}\'',false));
+		$cpu_info['sys'] = trim(Tool::cmd('mpstat | grep all | awk \'{print $6}\'',false));
+		$cpu_info['iowait'] = trim(Tool::cmd('mpstat | grep all | awk \'{print $7}\'',false));
+		
 		$cat_cpuinfo = Tool::cmd('cat /proc/cpuinfo',true);
 		$break_flag = false;
 		foreach ($cat_cpuinfo as $row){

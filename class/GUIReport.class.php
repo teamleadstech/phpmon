@@ -47,7 +47,7 @@ class GUIReport extends ServerReport
 		return $response;
 	}
 	
-	public function get_load_trend($sid){
+	public function get_load_trend($sid,$date=false){
 		$response = array();
 		$response['cols'] = array(
             array(
@@ -69,7 +69,14 @@ class GUIReport extends ServerReport
         );
 		
 		$server_id = $this->db_conn->quote($sid);
-		$sql = "SELECT ServerId,load_1min,load_5min,load_15min,CreatedDT FROM ProdMonitor.MonitorLog WHERE serverid = $server_id ORDER BY CreatedDT DESC LIMIT 1440;";
+		if($date){
+			$date_start = $this->db_conn->quote($date.' 00:00:00');
+			$date_end = $this->db_conn->quote($date.' 23:59:59');
+			$sql = "SELECT ServerId,load_1min,load_5min,load_15min,CreatedDT FROM ProdMonitor.MonitorLog WHERE serverid = $server_id AND CreatedDT >= $date_start AND CreatedDT <= $date_end ORDER BY CreatedDT DESC LIMIT 1440;";
+			
+		}else{
+			$sql = "SELECT ServerId,load_1min,load_5min,load_15min,CreatedDT FROM ProdMonitor.MonitorLog WHERE serverid = $server_id ORDER BY CreatedDT DESC LIMIT 1440;";
+		}
 		$result = $this->db_conn->fetchAll($sql);
 		foreach ($result as $row){
 			$source = new DateTime($row['CreatedDT']);
@@ -91,7 +98,7 @@ class GUIReport extends ServerReport
 	
 	}
 	
-	public function get_mem_use_trend($sid){
+	public function get_mem_use_trend($sid,$date=false){
 		$response = array();
 		$response['cols'] = array(
             array(
@@ -104,7 +111,14 @@ class GUIReport extends ServerReport
             ),
         );
 		$server_id = $this->db_conn->quote($sid);
-		$sql = "SELECT ServerId,mem_use_pert,CreatedDT FROM ProdMonitor.MonitorLog WHERE serverid = $server_id ORDER BY CreatedDT DESC LIMIT 1440;";
+		if($date){
+			$date_start = $this->db_conn->quote($date.' 00:00:00');
+			$date_end = $this->db_conn->quote($date.' 23:59:59');
+			$sql = "SELECT ServerId,mem_use_pert,CreatedDT FROM ProdMonitor.MonitorLog WHERE serverid = $server_id AND CreatedDT >= $date_start AND CreatedDT <= $date_end ORDER BY CreatedDT DESC LIMIT 1440;";
+			
+		}else{
+			$sql = "SELECT ServerId,mem_use_pert,CreatedDT FROM ProdMonitor.MonitorLog WHERE serverid = $server_id ORDER BY CreatedDT DESC LIMIT 1440;";
+		}
 		$result = $this->db_conn->fetchAll($sql);
 		foreach ($result as $row){
 			$source = new DateTime($row['CreatedDT']);
@@ -118,7 +132,7 @@ class GUIReport extends ServerReport
 		return $response;
 	}
 	
-	public function get_disk_tps_trend($sid){
+	public function get_disk_tps_trend($sid,$date=false){
 		$response = array();
 		$response['cols'] = array(
             array(
@@ -131,7 +145,14 @@ class GUIReport extends ServerReport
             ),
         );
 		$server_id = $this->db_conn->quote($sid);
-		$sql = "SELECT ServerId,disk_tps,CreatedDT FROM ProdMonitor.MonitorLog WHERE serverid = $server_id ORDER BY CreatedDT DESC LIMIT 1440;";
+		if($date){
+			$date_start = $this->db_conn->quote($date.' 00:00:00');
+			$date_end = $this->db_conn->quote($date.' 23:59:59');
+			$sql = "SELECT ServerId,disk_tps,CreatedDT FROM ProdMonitor.MonitorLog WHERE serverid = $server_id AND CreatedDT >= $date_start AND CreatedDT <= $date_end ORDER BY CreatedDT DESC LIMIT 1440;";
+			
+		}else{
+			$sql = "SELECT ServerId,disk_tps,CreatedDT FROM ProdMonitor.MonitorLog WHERE serverid = $server_id ORDER BY CreatedDT DESC LIMIT 1440;";
+		}
 		$result = $this->db_conn->fetchAll($sql);
 		foreach ($result as $row){
 			$source = new DateTime($row['CreatedDT']);
@@ -145,7 +166,7 @@ class GUIReport extends ServerReport
 		return $response;
 	}
 	
-	public function get_php_pid_trend($sid){
+	public function get_php_pid_trend($sid,$date=false){
 		$response = array();
 		$response['cols'] = array(
             array(
@@ -158,7 +179,14 @@ class GUIReport extends ServerReport
             ),
         );
 		$server_id = $this->db_conn->quote($sid);
-		$sql = "SELECT ServerId,php_pids,CreatedDT FROM ProdMonitor.MonitorLog WHERE serverid = $server_id ORDER BY CreatedDT DESC LIMIT 1440;";
+		if($date){
+			$date_start = $this->db_conn->quote($date.' 00:00:00');
+			$date_end = $this->db_conn->quote($date.' 23:59:59');
+			$sql = "SELECT ServerId,php_pids,CreatedDT FROM ProdMonitor.MonitorLog WHERE serverid = $server_id AND CreatedDT >= $date_start AND CreatedDT <= $date_end ORDER BY CreatedDT DESC LIMIT 1440;";
+			
+		}else{
+			$sql = "SELECT ServerId,php_pids,CreatedDT FROM ProdMonitor.MonitorLog WHERE serverid = $server_id ORDER BY CreatedDT DESC LIMIT 1440;";
+		}
 		$result = $this->db_conn->fetchAll($sql);
 		foreach ($result as $row){
 			$source = new DateTime($row['CreatedDT']);

@@ -21,21 +21,37 @@ if($_GET['method'] == 'get_server_specs' && isset($_GET['server_id']) && !empty(
 }
 
 if($_GET['method'] == 'get_load_trend' && isset($_GET['server_id']) && !empty($_GET['server_id'])){
+	$date = false;
+	if(isset($_GET['date'])){
+		$date = $_GET['date'];
+	}
 	$gui = new GUIReport(); 
-	echo json_encode($gui->get_load_trend($_GET['server_id']));
+	echo json_encode($gui->get_load_trend($_GET['server_id'],$date));
 }
 
 if($_GET['method'] == 'get_mem_use_trend' && isset($_GET['server_id']) && !empty($_GET['server_id'])){
+	$date = false;
+	if(isset($_GET['date'])){
+		$date = $_GET['date'];
+	}
 	$gui = new GUIReport(); 
-	echo json_encode($gui->get_mem_use_trend($_GET['server_id']));
+	echo json_encode($gui->get_mem_use_trend($_GET['server_id'],$date));
 }
 
 if($_GET['method'] == 'get_disk_tps_trend' && isset($_GET['server_id']) && !empty($_GET['server_id'])){
+	$date = false;
+	if(isset($_GET['date'])){
+		$date = $_GET['date'];
+	}
 	$gui = new GUIReport(); 
-	echo json_encode($gui->get_disk_tps_trend($_GET['server_id']));
+	echo json_encode($gui->get_disk_tps_trend($_GET['server_id'],$date));
 }
 
 if($_GET['method'] == 'get_php_pid_trend' && isset($_GET['server_id']) && !empty($_GET['server_id'])){
+	$date = false;
+	if(isset($_GET['date'])){
+		$date = $_GET['date'];
+	}
 	$gui = new GUIReport(); 
-	echo json_encode($gui->get_php_pid_trend($_GET['server_id']));
+	echo json_encode($gui->get_php_pid_trend($_GET['server_id'],$date));
 }
