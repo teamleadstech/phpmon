@@ -26,6 +26,7 @@ include_once WWW_DIR.'page/template.nav.php';
 	google.charts.load('current', {'packages':['corechart','table','line']});
 	google.charts.setOnLoadCallback(drawTable);
 	google.charts.setOnLoadCallback(drawLoadTrend);
+	google.charts.setOnLoadCallback(drawCPUTrend);
 	google.charts.setOnLoadCallback(drawMemTrend);
 	google.charts.setOnLoadCallback(drawDiskTrend);
 	google.charts.setOnLoadCallback(drawPHPPidTrend);
@@ -58,6 +59,29 @@ include_once WWW_DIR.'page/template.nav.php';
 			colors: ['#a52714', '#097138','#0000ff']
 		  };
 		var chart = new google.visualization.LineChart(document.getElementById('server_load'));
+		chart.draw(data, options);
+		
+	}
+	
+	function drawCPUTrend() {
+		var jsonData = $.ajax({
+		  url: "/api?method=get_cpu_trend&server_id=<?php echo $_GET['server'].$date_param; ?>",
+		  dataType: "json",
+		  async: false
+		}).responseText;
+		var data = new google.visualization.DataTable(jsonData);
+		var options = {
+			hAxis: {
+			  title: 'Time (UTC)',
+			  logScale: false
+			},
+			vAxis: {
+			  title: 'CPU Idle %',
+			  logScale: false
+			},
+			colors: ['#a52714', '#097138','#0000ff']
+		  };
+		var chart = new google.visualization.LineChart(document.getElementById('server_cpu'));
 		chart.draw(data, options);
 		
 	}
@@ -162,6 +186,15 @@ include_once WWW_DIR.'page/template.nav.php';
 			<div class="panel panel-info">
 			<div class="panel-heading">Load Monitor</div>
 			<div id="server_load"></div>
+			</div>
+		</div>
+	</div>
+	
+	<div class="row">
+		<div class="col-lg-12">
+			<div class="panel panel-info">
+			<div class="panel-heading">CPU Monitor</div>
+			<div id="server_cpu"></div>
 			</div>
 		</div>
 	</div>

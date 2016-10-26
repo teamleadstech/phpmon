@@ -98,6 +98,40 @@ class GUIReport extends ServerReport
 	
 	}
 	
+	public function get_cpu_trend($sid,$date=false){
+		$response = array();
+		$response['cols'] = array(
+            array(
+                'label' => 'Datetime',
+                'type' => 'datetime',
+            ),
+            array(
+                'label' => 'CPU Idle',
+                'type' => 'number',
+            ),
+        );
+		$server_id = $this->db_conn->quote($sid);
+		if($date){
+			$date_start = $this->db_conn->quote($date.' 00:00:00');
+			$date_end = $this->db_conn->quote($date.' 23:59:59');
+			$sql = "SELECT ServerId,cpu_idle,CreatedDT FROM ProdMonitor.MonitorLog WHERE serverid = $server_id AND CreatedDT >= $date_start AND CreatedDT <= $date_end ORDER BY CreatedDT DESC LIMIT 1440;";
+			
+		}else{
+			$sql = "SELECT ServerId,cpu_idle,CreatedDT FROM ProdMonitor.MonitorLog WHERE serverid = $server_id ORDER BY CreatedDT DESC LIMIT 1440;";
+		}
+		$result = $this->db_conn->fetchAll($sql);
+		foreach ($result as $row){
+			$source = new DateTime($row['CreatedDT']);
+			$gtime = 'Date('.$source->format('Y,n,j,G,i,s').')';
+			$cpu_use = round($row['cpu_idle'],2);
+			$response['rows'][]['c'] = array(
+				array('v' => $gtime ),
+				array('v' => $cpu_use ),
+			);
+		}
+		return $response;
+	}
+	
 	public function get_mem_use_trend($sid,$date=false){
 		$response = array();
 		$response['cols'] = array(

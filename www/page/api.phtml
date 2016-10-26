@@ -1,5 +1,5 @@
 <?php
-$allow_method = array('get_pull_log','get_server_specs','get_load_trend','get_mem_use_trend','get_disk_tps_trend','get_php_pid_trend');
+$allow_method = array('get_pull_log','get_server_specs','get_load_trend','get_cpu_trend','get_mem_use_trend','get_disk_tps_trend','get_php_pid_trend');
 
 if(!isset($_GET['method']) || !in_array($_GET['method'],$allow_method)){
 	//var_dump(in_array($_GET['method'],$method));
@@ -27,6 +27,15 @@ if($_GET['method'] == 'get_load_trend' && isset($_GET['server_id']) && !empty($_
 	}
 	$gui = new GUIReport(); 
 	echo json_encode($gui->get_load_trend($_GET['server_id'],$date));
+}
+
+if($_GET['method'] == 'get_cpu_trend' && isset($_GET['server_id']) && !empty($_GET['server_id'])){
+	$date = false;
+	if(isset($_GET['date'])){
+		$date = $_GET['date'];
+	}
+	$gui = new GUIReport(); 
+	echo json_encode($gui->get_cpu_trend($_GET['server_id'],$date));
 }
 
 if($_GET['method'] == 'get_mem_use_trend' && isset($_GET['server_id']) && !empty($_GET['server_id'])){
