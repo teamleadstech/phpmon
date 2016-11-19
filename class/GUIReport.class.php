@@ -106,7 +106,7 @@ class GUIReport extends ServerReport
                 'type' => 'datetime',
             ),
             array(
-                'label' => 'CPU Idle',
+                'label' => 'CPU Use',
                 'type' => 'number',
             ),
         );
